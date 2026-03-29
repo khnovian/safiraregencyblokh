@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Safira Regency</title>
+    <link rel="manifest" href="manifest.json">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; height: 100vh; }
+        .card { border-radius: 20px; border: none; shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card shadow-lg mx-auto" style="max-width: 350px;">
+        <div class="card-body p-4 text-center">
+            <div class="mb-3 text-primary"><i class="bi bi-shield-lock display-4"></i></div>
+            <h5 class="fw-bold mb-3">Login Petugas</h5>
+            
+            <form id="loginForm">
+                <input type="text" id="userAdmin" name="username" class="form-control mb-2 text-center" placeholder="Username" autocomplete="username" required>
+                <input type="password" id="passAdmin" name="password" class="form-control mb-3 text-center" placeholder="Password" autocomplete="current-password" required>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const urlGAS = "https://script.google.com/macros/s/AKfycbyyzTPlFuCY9eb1nRjdnuh4-lGzR_hhXp65LXyE6GBX1kpmKCDq6xnnYpnx57HPC7oO4w/exec"; // <--- GANTI DENGAN LINK .EXEC ANDA
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const user = document.getElementById('userAdmin').value;
+        const pass = document.getElementById('passAdmin').value;
+
+        // Mengirim data ke GAS
+        fetch(urlGAS, {
+            method: "POST",
+            body: JSON.stringify({
+                username: user,
+                password: pass
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.sukses) {
+                alert("Selamat Datang, " + data.nama + "!");
+                // Arahkan ke halaman dashboard (bisa link GAS lama Anda)
+                window.location.href = "https://script.google.com/macros/s/AKfycbyyzTPlFuCY9eb1nRjdnuh4-lGzR_hhXp65LXyE6GBX1kpmKCDq6xnnYpnx57HPC7oO4w/exec"; 
+            } else {
+                alert(data.pesan);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Terjadi kesalahan koneksi ke server.");
+        });
+    });
+</script>
+
+</body>
+</html>
